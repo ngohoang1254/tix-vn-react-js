@@ -36,3 +36,80 @@
     transform: rotate(360deg);
   }
 }
+.carousel__movie {
+  position: relative;
+}
+
+.carousel__movie .carousel-indicators {
+  margin-bottom: 50px;
+}
+
+.carousel__movie .carousel-indicators .active {
+  background-color: #fb4226;
+}
+
+.carousel__movie .carousel-indicators li {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #d8d8d8;
+}
+
+.carousel__movie .carousel__content {
+  position: relative;
+}
+
+.carousel__movie .carousel__text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.carousel__movie .carousel__text a {
+  text-decoration: none;
+}
+
+.carousel__movie .carousel__text a i {
+  font-size: 30px;
+  height: 80px;
+  width: 80px;
+  display: block;
+  color: white;
+  border: solid 2px white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 80px;
+  opacity: 0;
+  transition: all 0.5s;
+}
+
+.carousel__movie .carousel__calendar {
+  position: absolute;
+  max-width: 940px;
+  width: 100%;
+  bottom: 0%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  display: flex;
+  align-items: center;
+}
+
+.carousel__movie .carousel__calendar .container-fluid {
+  padding: 20px;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.carousel__movie .carousel__calendar select {
+  border: none;
+  border-right: 1px solid grey;
+}
+
+.carousel__movie .carousel__calendar button {
+  margin-left: 30px;
+}
+
+.carousel__movie:hover .carousel__text a i {
+  opacity: 1;
+}
