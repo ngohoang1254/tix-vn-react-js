@@ -7,6 +7,7 @@ import moment from "moment";
 
 function SamplePrevArrow(props) {
     const { className, style, onClick } = props;
+   
     return (
         <div
             className={className}

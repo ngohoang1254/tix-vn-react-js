@@ -1,16 +1,129 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { getCinema } from "../../../../actions/Cinema";
+import { getInfoCinema } from '../../../../actions/InfoCinema';
+import CalendarItem from './CalendarItem';
+import CalendarMovie from "./CalendarMovie";
 class Calendar extends Component {
     componentDidMount() {
         this.props.getCinema();
+        this.props.getInfoCinema();
+
+
+    }
+    renderListMovie = (maHeThongRap) => {
+        const { infoCinema } = this.props;
+        return infoCinema.map((item) => {
+            if (item.maHeThongRap == maHeThongRap) {
+                return item.lstCumRap.map((item, index) => {
+                    if(index == 0){
+                    return (
+                        <CalendarMovie
+                            key={item.maCumRap}
+                            data={item}
+                            active = {true}
+                        />)
+                    }
+                    else{
+                        return(
+                            <CalendarMovie
+                            key={item.maCumRap}
+                            data={item}
+                            active = {false}
+                        />
+                        )
+                    }
+                })
+            }
+        })
+    }
+    renderListCinema = () => {
+        const { infoCinema } = this.props;
+        return infoCinema.map((item, index) => {
+            if (index == 0) {
+                return (
+                    <div key={item.maHeThongRap} id={item.maHeThongRap} className="tab-pane fade in active">
+                        <div className="row">
+                            <div className="col-4 cinema__about">
+                                <ul className="nav nav-tabs flex-column">
+                                    {this.renderInfoCinema(item.maHeThongRap)}
+                                </ul>
+                            </div>
+                            <div className="col-8 movie__column">
+                                <div className="tab-content">
+                                    {this.renderListMovie(item.maHeThongRap)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+            else {
+                return (
+                    <div key={item.maHeThongRap} id={item.maHeThongRap} className="tab-pane fade in">
+                        <div className="row">
+                            <div className="col-4 cinema__about">
+                                <ul className="nav nav-tabs flex-column">
+                                    {this.renderInfoCinema(item.maHeThongRap)}
+                                </ul>
+                            </div>
+                            <div className="col-8 movie__column">
+                                <div className="tab-content">
+                                    {this.renderListMovie(item.maHeThongRap)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+        })
+    }
+    renderInfoMovie = (maHeThongRap) => {
+        const { infoCinema } = this.props;
+        return infoCinema.map((item, index) => {
+            if (item.maHeThongRap == maHeThongRap) {
+                return item.lstCumRap.map((item, index) => {
+
+                })
+            }
+        })
+    }
+    renderInfoCinema = (maHeThongRap) => {
+        const { infoCinema } = this.props;
+        return infoCinema.map((item) => {
+            if (item.maHeThongRap == maHeThongRap) {
+                return item.lstCumRap.map((item, index) => {
+                    if (index == 0) {
+                        return (<CalendarItem
+                            key={item.maCumRap}
+                            diaChi={item.diaChi}
+                            tenCumRap={item.tenCumRap}
+                            active={true}
+                            maCumRap={item.maCumRap}
+                        />
+                        )
+                    }
+                    else {
+                        return (
+                            <CalendarItem
+                                key={item.maCumRap}
+                                diaChi={item.diaChi}
+                                tenCumRap={item.tenCumRap}
+                                active={false}
+                                maCumRap={item.maCumRap}
+                            />
+                        )
+                    }
+                })
+            }
+        })
     }
     renderCinemaLogo = () => {
         const { cinema } = this.props;
         return cinema.map((item, index) => {
             if (index == 0) {
                 return (
-                    <li className="active" key={item.maHeThongRap}><a data-toggle="tab" href={"#"+item.maHeThongRap}>
+                    <li className="active" key={item.maHeThongRap}><a data-toggle="tab" href={"#" + item.maHeThongRap}>
                         <img src={item.logo} className="img-fluid" />
                         <hr />
                     </a>
@@ -19,7 +132,7 @@ class Calendar extends Component {
             }
             else {
                 return (
-                    <li key={item.maHeThongRap}><a data-toggle="tab" href="#bhd">
+                    <li key={item.maHeThongRap}><a data-toggle="tab" href={"#" + item.maHeThongRap}>
                         <img src={item.logo} className="img-fluid" />
                         <hr />
                     </a></li>
@@ -29,6 +142,14 @@ class Calendar extends Component {
         })
     }
     render() {
+        //   const {infoCinema} = this.props;
+        //     return infoCinema.map((item,index)=>{
+        //         if(item.maHeThongRap == "BHDStar"){
+        //             return item.lstCumRap.map((item,index)=>{
+        //                 console.log(item)
+        //             })
+        //         }
+        //     })
 
         return (
             <section className="calendar container" id="calendar">
@@ -72,632 +193,22 @@ class Calendar extends Component {
                                 </a></li> */}
                             </ul>
                         </div>
-                        
+
                         {/* column 2 and 3 */}
                         <div className="col-11 cinemaAddress">
                             <div className="tab-content">
                                 {/* First item row in address  */}
-                                <div id="BHDStar" className="tab-pane fade in active">
+
+                                {/* <div id="BHDStar" className="tab-pane fade in active">
                                     <div className="row">
-                                        {/* List of address columns */}
                                         <div className="col-4 cinema__about">
                                             <ul className="nav nav-tabs flex-column">
-                                                <li>
-                                                    {/* Address of Cinema  */}
-                                                    <div className="row cinema-item">
-                                                        <div className="cinema-info">
-                                                            <div className="col-4">
-                                                                <img src="https://s3img.vcdn.vn/123phim/2018/09/cgv-vincom-go-vap-15380174906047.jpg" />
-                                                            </div>
-                                                            {/* Info of cinema */}
-                                                            <div className="col-8 cinema__address">
-                                                                <span>
-                                                                    <span><span className="cinema__name">CGV</span> - Vincom Gò Vấp</span>
-                                                                </span>
-                                                                <span className="info-movie">Tầng 4-5, Saigonres Plaza, 79/81 Nguyễn Xí, P 26, Q Bình
-                            Thạnh</span>
-                                                                <a data-toggle="tab" href="#cgv-movie">
-                                                                    <span>[Chi tiết]</span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <hr />
-                                                </li>
-                                                <li>
-                                                    {/* Address of Cinema  */}
-                                                    <div className="row cinema-item">
-                                                        <div className="cinema-info">
-                                                            <div className="col-4">
-                                                                <img src="https://s3img.vcdn.vn/123phim/2018/09/cgv-vincom-go-vap-15380174906047.jpg" />
-                                                            </div>
-                                                            {/* Info of cinema */}
-                                                            <div className="col-8 cinema__address">
-                                                                <span>CGV - Vincom Gò Vấp </span>
-                                                                <span className="info-movie">Tầng 4-5, Saigonres Plaza, 79/81 Nguyễn Xí, P 26, Q Bình
-                            Thạnh</span>
-                                                                <a data-toggle="tab" href="#cgv1-movie">
-                                                                    <span>[Chi tiết]</span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <hr />
-                                                </li>
-                                                <li>
-                                                    {/* Address of Cinema  */}
-                                                    <div className="row cinema-item">
-                                                        <div className="cinema-info">
-                                                            <div className="col-4">
-                                                                <img src="https://s3img.vcdn.vn/123phim/2018/09/cgv-vincom-go-vap-15380174906047.jpg" />
-                                                            </div>
-                                                            {/* Info of cinema */}
-                                                            <div className="col-8 cinema__address">
-                                                                <span>CGV - Vincom Gò Vấp </span>
-                                                                <span className="info-movie">Tầng 4-5, Saigonres Plaza, 79/81 Nguyễn Xí, P 26, Q Bình
-                            Thạnh</span>
-                                                                <a data-toggle="tab" href="#cgv1-movie">
-                                                                    <span>[Chi tiết]</span>
-                                                                </a>
-                                                            </div>
-                                                            <hr />
-                                                        </div>
-                                                    </div>
-                                                    <hr />
-                                                </li>
-                                                <li>
-                                                    {/* Address of Cinema  */}
-                                                    <div className="row cinema-item">
-                                                        <div className="cinema-info">
-                                                            <div className="col-4">
-                                                                <img src="https://s3img.vcdn.vn/123phim/2018/09/cgv-vincom-go-vap-15380174906047.jpg" />
-                                                            </div>
-                                                            {/* Info of cinema */}
-                                                            <div className="col-8 cinema__address">
-                                                                <span>CGV - Vincom Gò Vấp </span>
-                                                                <span className="info-movie">Tầng 4-5, Saigonres Plaza, 79/81 Nguyễn Xí, P 26, Q Bình
-                            Thạnh</span>
-                                                                <a data-toggle="tab" href="#cgv-movie">
-                                                                    <span>[Chi tiết]</span>
-                                                                </a>
-                                                            </div>
-                                                            <hr />
-                                                        </div>
-                                                    </div>
-                                                    <hr />
-                                                </li>
-                                                <li>
-                                                    {/* Address of Cinema  */}
-                                                    <div className="row cinema-item">
-                                                        <div className="cinema-info">
-                                                            <div className="col-4">
-                                                                <img src="https://s3img.vcdn.vn/123phim/2018/09/cgv-vincom-go-vap-15380174906047.jpg" />
-                                                            </div>
-                                                            {/* Info of cinema */}
-                                                            <div className="col-8 cinema__address">
-                                                                <span>CGV - Vincom Gò Vấp </span>
-                                                                <span className="info-movie">Tầng 4-5, Saigonres Plaza, 79/81 Nguyễn Xí, P 26, Q Bình
-                            Thạnh</span>
-                                                                <a data-toggle="tab" href="#cgv-movie">
-                                                                    <span>[Chi tiết]</span>
-                                                                </a>
-                                                            </div>
-                                                            <hr />
-                                                        </div>
-                                                    </div>
-                                                    <hr />
-                                                </li>
-                                                <li>
-                                                    {/* Address of Cinema  */}
-                                                    <div className="row cinema-item">
-                                                        <div className="cinema-info">
-                                                            <div className="col-4">
-                                                                <img src="https://s3img.vcdn.vn/123phim/2018/09/cgv-vincom-go-vap-15380174906047.jpg" />
-                                                            </div>
-                                                            {/* Info of cinema */}
-                                                            <div className="col-8 cinema__address">
-                                                                <span>CGV - Vincom Gò Vấp </span>
-                                                                <span className="info-movie">Tầng 4-5, Saigonres Plaza, 79/81 Nguyễn Xí, P 26, Q Bình
-                            Thạnh</span>
-                                                                <a data-toggle="tab" href="#cgv-movie">
-                                                                    <span>[Chi tiết]</span>
-                                                                </a>
-                                                            </div>
-                                                            <hr />
-                                                        </div>
-                                                    </div>
-                                                    <hr />
-                                                </li>
-                                                <li>
-                                                    {/* Address of Cinema  */}
-                                                    <div className="row cinema-item">
-                                                        <div className="cinema-info">
-                                                            <div className="col-4">
-                                                                <img src="https://s3img.vcdn.vn/123phim/2018/09/cgv-vincom-go-vap-15380174906047.jpg" />
-                                                            </div>
-                                                            {/* Info of cinema */}
-                                                            <div className="col-8 cinema__address">
-                                                                <span>CGV - Vincom Gò Vấp </span>
-                                                                <span className="info-movie">Tầng 4-5, Saigonres Plaza, 79/81 Nguyễn Xí, P 26, Q Bình
-                            Thạnh</span>
-                                                                <a data-toggle="tab" href="#cgv-movie">
-                                                                    <span>[Chi tiết]</span>
-                                                                </a>
-                                                            </div>
-                                                            <hr />
-                                                        </div>
-                                                    </div>
-                                                    <hr />
-                                                </li>
-                                                <li>
-                                                    {/* Address of Cinema  */}
-                                                    <div className="row cinema-item">
-                                                        <div className="cinema-info">
-                                                            <div className="col-4">
-                                                                <img src="https://s3img.vcdn.vn/123phim/2018/09/cgv-vincom-go-vap-15380174906047.jpg" />
-                                                            </div>
-                                                            {/* Info of cinema */}
-                                                            <div className="col-8 cinema__address">
-                                                                <span>CGV - Vincom Gò Vấp </span>
-                                                                <span className="info-movie">Tầng 4-5, Saigonres Plaza, 79/81 Nguyễn Xí, P 26, Q Bình
-                            Thạnh</span>
-                                                                <a data-toggle="tab" href="#cgv-movie">
-                                                                    <span>[Chi tiết]</span>
-                                                                </a>
-                                                            </div>
-                                                            <hr />
-                                                        </div>
-                                                    </div>
-                                                    <hr />
-                                                </li>
-                                                <li>
-                                                    {/* Address of Cinema  */}
-                                                    <div className="row cinema-item">
-                                                        <div className="cinema-info">
-                                                            <div className="col-4">
-                                                                <img src="https://s3img.vcdn.vn/123phim/2018/09/cgv-vincom-go-vap-15380174906047.jpg" />
-                                                            </div>
-                                                            {/* Info of cinema */}
-                                                            <div className="col-8 cinema__address">
-                                                                <span>CGV - Vincom Gò Vấp </span>
-                                                                <span className="info-movie">Tầng 4-5, Saigonres Plaza, 79/81 Nguyễn Xí, P 26, Q Bình
-                            Thạnh</span>
-                                                                <a data-toggle="tab" href="#cgv-movie">
-                                                                    <span>[Chi tiết]</span>
-                                                                </a>
-                                                            </div>
-                                                            <hr />
-                                                        </div>
-                                                    </div>
-                                                    <hr />
-                                                </li>
-                                                {/* <li><a data-toggle="tab" href="#menu12">Menu 1</a></li>
-                      <li><a data-toggle="tab" href="#menu23">Menu 2</a></li> */}
+                                                {this.renderInfoCinema()}
                                             </ul>
                                         </div>
-                                        {/* Third column */}
-                                        <div className="col-8 movie__column">
-                                            <div className="tab-content">
-                                                <div id="cgv-movie" className="tab-pane fade in active">
-                                                    <div className="movie__item">
-                                                        <div className="row movie__info">
-                                                            <div className="col-1">
-                                                                <img src="https://s3img.vcdn.vn/mobile/123phim/2016/11/danh-cap-giac-mo-inception-14794516242347_60x60.jpg" />
-                                                            </div>
-                                                            <div className="col-10 movie__name">
-                                                                <span className="type__showing">C16</span>
-                                                                <span>Đánh cắp giấc mơ - Inception</span>
-                                                                <a href="#">
-                                                                    <p>148 phút - TIX 7.9 - IMDb 8.8</p>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div className="movie__session">
-                                                            <p>2D Digital
-                        </p>
-                                                            <div className="row movie__time">
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <hr />
-                                                    </div>
-                                                    <div className="movie__item">
-                                                        <div className="row movie__info">
-                                                            <div className="col-1">
-                                                                <img src="https://s3img.vcdn.vn/mobile/123phim/2016/11/danh-cap-giac-mo-inception-14794516242347_60x60.jpg" />
-                                                            </div>
-                                                            <div className="col-10 movie__name">
-                                                                <span className="type__showing">C16</span>
-                                                                <span>Đánh cắp giấc mơ - Inception</span>
-                                                                <a href="#">
-                                                                    <p>148 phút - TIX 7.9 - IMDb 8.8</p>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div className="movie__session">
-                                                            <p>2D Digital
-                        </p>
-                                                            <div className="row movie__time">
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <hr />
-                                                    </div>
-                                                    <div className="movie__item">
-                                                        <div className="row movie__info">
-                                                            <div className="col-1">
-                                                                <img src="https://s3img.vcdn.vn/mobile/123phim/2016/11/danh-cap-giac-mo-inception-14794516242347_60x60.jpg" />
-                                                            </div>
-                                                            <div className="col-10 movie__name">
-                                                                <span className="type__showing">C16</span>
-                                                                <span>Đánh cắp giấc mơ - Inception</span>
-                                                                <a href="#">
-                                                                    <p>148 phút - TIX 7.9 - IMDb 8.8</p>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div className="movie__session">
-                                                            <p>2D Digital
-                        </p>
-                                                            <div className="row movie__time">
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <hr />
-                                                    </div>
-                                                    <div className="movie__item">
-                                                        <div className="row movie__info">
-                                                            <div className="col-1">
-                                                                <img src="https://s3img.vcdn.vn/mobile/123phim/2016/11/danh-cap-giac-mo-inception-14794516242347_60x60.jpg" />
-                                                            </div>
-                                                            <div className="col-10 movie__name">
-                                                                <span className="type__showing">C16</span>
-                                                                <span>Đánh cắp giấc mơ - Inception</span>
-                                                                <a href="#">
-                                                                    <p>148 phút - TIX 7.9 - IMDb 8.8</p>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div className="movie__session">
-                                                            <p>2D Digital
-                        </p>
-                                                            <div className="row movie__time">
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <hr />
-                                                    </div>
-                                                    <div className="movie__item">
-                                                        <div className="row movie__info">
-                                                            <div className="col-1">
-                                                                <img src="https://s3img.vcdn.vn/mobile/123phim/2016/11/danh-cap-giac-mo-inception-14794516242347_60x60.jpg" />
-                                                            </div>
-                                                            <div className="col-10 movie__name">
-                                                                <span className="type__showing">C16</span>
-                                                                <span>Đánh cắp giấc mơ - Inception</span>
-                                                                <a href="#">
-                                                                    <p>148 phút - TIX 7.9 - IMDb 8.8</p>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div className="movie__session">
-                                                            <p>2D Digital
-                        </p>
-                                                            <div className="row movie__time">
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <hr />
-                                                    </div>
-                                                    <div className="movie__item">
-                                                        <div className="row movie__info">
-                                                            <div className="col-1">
-                                                                <img src="https://s3img.vcdn.vn/mobile/123phim/2016/11/danh-cap-giac-mo-inception-14794516242347_60x60.jpg" />
-                                                            </div>
-                                                            <div className="col-10 movie__name">
-                                                                <span className="type__showing">C16</span>
-                                                                <span>Đánh cắp giấc mơ - Inception</span>
-                                                                <a href="#">
-                                                                    <p>148 phút - TIX 7.9 - IMDb 8.8</p>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div className="movie__session">
-                                                            <p>2D Digital
-                        </p>
-                                                            <div className="row movie__time">
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <hr />
-                                                    </div>
-                                                    <div className="movie__item">
-                                                        <div className="row movie__info">
-                                                            <div className="col-1">
-                                                                <img src="https://s3img.vcdn.vn/mobile/123phim/2016/11/danh-cap-giac-mo-inception-14794516242347_60x60.jpg" />
-                                                            </div>
-                                                            <div className="col-10 movie__name">
-                                                                <span className="type__showing">C16</span>
-                                                                <span>Đánh cắp giấc mơ - Inception</span>
-                                                                <a href="#">
-                                                                    <p>148 phút - TIX 7.9 - IMDb 8.8</p>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div className="movie__session">
-                                                            <p>2D Digital
-                        </p>
-                                                            <div className="row movie__time">
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <hr />
-                                                    </div>
-                                                    <div className="movie__item">
-                                                        <div className="row movie__info">
-                                                            <div className="col-1">
-                                                                <img src="https://s3img.vcdn.vn/mobile/123phim/2016/11/danh-cap-giac-mo-inception-14794516242347_60x60.jpg" />
-                                                            </div>
-                                                            <div className="col-10 movie__name">
-                                                                <span className="type__showing">C16</span>
-                                                                <span>Đánh cắp giấc mơ - Inception</span>
-                                                                <a href="#">
-                                                                    <p>148 phút - TIX 7.9 - IMDb 8.8</p>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div className="movie__session">
-                                                            <p>2D Digital
-                        </p>
-                                                            <div className="row movie__time">
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <hr />
-                                                    </div>
-                                                    <div className="movie__item">
-                                                        <div className="row movie__info">
-                                                            <div className="col-1">
-                                                                <img src="https://s3img.vcdn.vn/mobile/123phim/2016/11/danh-cap-giac-mo-inception-14794516242347_60x60.jpg" />
-                                                            </div>
-                                                            <div className="col-10 movie__name">
-                                                                <span className="type__showing">C16</span>
-                                                                <span>Đánh cắp giấc mơ - Inception</span>
-                                                                <a href="#">
-                                                                    <p>148 phút - TIX 7.9 - IMDb 8.8</p>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div className="movie__session">
-                                                            <p>2D Digital
-                        </p>
-                                                            <div className="row movie__time">
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <hr />
-                                                    </div>
-                                                    <div className="movie__item">
-                                                        <div className="row movie__info">
-                                                            <div className="col-1">
-                                                                <img src="https://s3img.vcdn.vn/mobile/123phim/2016/11/danh-cap-giac-mo-inception-14794516242347_60x60.jpg" />
-                                                            </div>
-                                                            <div className="col-10 movie__name">
-                                                                <span className="type__showing">C16</span>
-                                                                <span>Đánh cắp giấc mơ - Inception</span>
-                                                                <a href="#">
-                                                                    <p>148 phút - TIX 7.9 - IMDb 8.8</p>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div className="movie__session">
-                                                            <p>2D Digital
-                        </p>
-                                                            <div className="row movie__time">
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <hr />
-                                                    </div>
-                                                    <div className="movie__item">
-                                                        <div className="row movie__info">
-                                                            <div className="col-1">
-                                                                <img src="https://s3img.vcdn.vn/mobile/123phim/2016/11/danh-cap-giac-mo-inception-14794516242347_60x60.jpg" />
-                                                            </div>
-                                                            <div className="col-10 movie__name">
-                                                                <span className="type__showing">C16</span>
-                                                                <span>Đánh cắp giấc mơ - Inception</span>
-                                                                <a href="#">
-                                                                    <p>148 phút - TIX 7.9 - IMDb 8.8</p>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div className="movie__session">
-                                                            <p>2D Digital
-                        </p>
-                                                            <div className="row movie__time">
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                                <div className="col-3">
-                                                                    <span><span className="start-time">14:40</span> ~ 17:08</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <hr />
-                                                    </div>
-                                                </div>
-                                                <div id="cgv1-movie" className="tab-pane fade in active">
-                                                    <div className="movie__item">
-                                                        <div className="movie__session">
-                                                            <p>Không có lịch chiếu
-                        </p>
-                                                        </div>
-                                                        <hr />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
-                                    {/* Second item row */}
-                                    {/* <div id="menu1" class="tab-pane fade">
-                  <h3>Menu 1</h3>
-                  <p>Some content in menu 1.</p>
-                </div>
-                <div id="menu2" class="tab-pane fade">
-                  <h3>Menu 2</h3>
-                  <p>Some content in menu 2.</p>
-                </div> */}
-                                </div>
+                                </div> */}
+                                {this.renderListCinema()}
                                 <div id="bhd" className="tab-pane fade in">
                                     <div className="row">
                                         {/* List of address columns */}
@@ -786,7 +297,7 @@ class Calendar extends Component {
                                                         </div>
                                                         <div className="movie__session">
                                                             <p>2D Digital
-                        </p>
+                            </p>
                                                             <div className="row movie__time">
                                                                 <div className="col-3">
                                                                     <span><span className="start-time">14:40</span> ~ 17:08</span>
@@ -821,7 +332,7 @@ class Calendar extends Component {
                                                         </div>
                                                         <div className="movie__session">
                                                             <p>2D Digital
-                        </p>
+                            </p>
                                                             <div className="row movie__time">
                                                                 <div className="col-3">
                                                                     <span><span className="start-time">14:40</span> ~ 17:08</span>
@@ -856,7 +367,7 @@ class Calendar extends Component {
                                                         </div>
                                                         <div className="movie__session">
                                                             <p>2D Digital
-                        </p>
+                            </p>
                                                             <div className="row movie__time">
                                                                 <div className="col-3">
                                                                     <span><span className="start-time">14:40</span> ~ 17:08</span>
@@ -891,7 +402,7 @@ class Calendar extends Component {
                                                         </div>
                                                         <div className="movie__session">
                                                             <p>2D Digital
-                        </p>
+                            </p>
                                                             <div className="row movie__time">
                                                                 <div className="col-3">
                                                                     <span><span className="start-time">14:40</span> ~ 17:08</span>
@@ -926,7 +437,7 @@ class Calendar extends Component {
                                                         </div>
                                                         <div className="movie__session">
                                                             <p>2D Digital
-                        </p>
+                            </p>
                                                             <div className="row movie__time">
                                                                 <div className="col-3">
                                                                     <span><span className="start-time">14:40</span> ~ 17:08</span>
@@ -961,7 +472,7 @@ class Calendar extends Component {
                                                         </div>
                                                         <div className="movie__session">
                                                             <p>2D Digital
-                        </p>
+                            </p>
                                                             <div className="row movie__time">
                                                                 <div className="col-3">
                                                                     <span><span className="start-time">14:40</span> ~ 17:08</span>
@@ -998,13 +509,17 @@ const mapStateToProps = (state) => {
     return {
         cinema: state.cinemaReducer.data,
         loading: state.cinemaReducer.loading,
-        error: state.cinemaReducer.error
+        error: state.cinemaReducer.error,
+        infoCinema: state.infoCinemaReducer.data
     }
 }
 const mapDispatchToProps = (dispatch) => {
     return {
         getCinema: () => {
             dispatch(getCinema());
+        },
+        getInfoCinema: () => {
+            dispatch(getInfoCinema());
         }
     }
 }

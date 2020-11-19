@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { getMovies } from "../../../../actions/Movies";
+
 class Carousel extends Component {
     renderCarousel = () => {
         const movieList = this.props.movieList.slice(1, 4);
@@ -25,8 +26,8 @@ class Carousel extends Component {
         this.props.getMovies();
     }
     render() {
-        const { movieList } = this.props;
-
+       
+    
         return (
             <section className="carousel__movie">
                 <div className="carousel__content">

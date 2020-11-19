@@ -6,8 +6,13 @@ import News from "../component/News";
 import MovieApp from "../component/mobileApp";
 import Footer from "../component/Footer";
 import Calendar from "../component/Calendar";
-export default class HomePage extends Component {
+import {connect} from "react-redux";
+import Loader from "../../../components/Loader";
+import {Route} from "react-router-dom";
+ class HomePage extends Component {
+
     render() {
+        console.log(this.props);
         // const now = moment().format("DD/MM/YYYY");
         // console.log(now);
         // const from = moment().subtract(7,'d').format("DD/MM/YYYY");
@@ -25,7 +30,11 @@ export default class HomePage extends Component {
         // console.log(nowShowing)
         // // console.log(now);
         // // console.log(today1);
-        // // console.log(today1>now);
+        // // // console.log(today1>now);
+        // const {loading,loading1,loading2,loading3,loading4,loading5} = this.props;
+        // if(loading1||loading2||loading||loading3||loading4||loading5){
+        //     return <Loader/>
+        // }
         return (
             <div>
                 <Carousel/>
@@ -35,6 +44,17 @@ export default class HomePage extends Component {
                 <MovieApp/>
                 <Footer/>
             </div>
-        )
+        );
     }
 }
+// const mapStateToProps = (state) => {
+//     return {
+//         loading : state.movieReducer.loading,
+//         loading1 : state.showing.loading,
+//         loading2 : state.newsReducer.loading,
+//         loading3 : state.reviewReducer.loading,
+//         loading4 : state.cinemaReducer.loading,
+//         loading5 : state.infoCinemaReducer.loading,
+//     }
+// }
+export default(HomePage);
