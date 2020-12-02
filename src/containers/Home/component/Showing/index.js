@@ -4,18 +4,22 @@ import { getShowTime } from '../../../../actions/Showtimes';
 import { connect } from "react-redux";
 import ShowingItem from "../showingItem";
 import moment from "moment";
+import {withRouter} from "react-router-dom";
 
 function SamplePrevArrow(props) {
     const { className, style, onClick } = props;
    
     return (
-        <div
-            className={className}
-            style={{ ...style, display: "block", background: "green" }}
-            onClick={onClick}
-        />
+        <i className="fa fa-angle-left prev"  onClick={onClick}/>
     );
 }
+function SampleNextArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+        <i className="fa fa-angle-right next"  onClick={onClick}/>
+
+    );
+  }
 class Showing extends Component {
     componentDidMount() {
         this.props.getShowing();
@@ -24,7 +28,7 @@ class Showing extends Component {
     compareDate = (ngayKhoiChieu) => {
         let day = moment((ngayKhoiChieu).split("T")[0]).format("YYYY/MM/DD");
         let today = moment().format("YYYY/MM/DD");
-        let lastMonth = moment().subtract(120, "d").format("YYYY/MM/DD");
+        let lastMonth = moment().subtract(365, "d").format("YYYY/MM/DD");
         // commingSoon
         if (day > today) {
             return true;
@@ -78,6 +82,9 @@ class Showing extends Component {
                 slidesToShow: 4,
                 infinite: true,
                 slidesToScroll: 4,
+                prevArrow: <SamplePrevArrow />,
+                nextArrow: <SampleNextArrow />,
+
             }
         }
         else{
@@ -94,7 +101,7 @@ class Showing extends Component {
         const lengthComming = this.renderShowing(false).length;
 
         let setting = {
-            rows: 2,
+            rows : 2,
             slidesToShow: 4,
             infinite: true,
             slidesToScroll: 4,
@@ -144,15 +151,11 @@ class Showing extends Component {
                     </div>
                     <div className="tab-content">
                         <div id="showing" className=" tab-pane active fade in showing__content__item show">
-                            <i className="fa fa-angle-left prev"/>
-                            <i className="fa fa-angle-right next" />
                             <Slider {...this.settingSlick(this.renderShowing(true).length)} className=" showing__item container-fluid">
                                 {this.renderShowing(true)}
                             </Slider>
                         </div>
                         <div id="comming" className="tab-pane fade  in showing__content__item">
-                            <i className="fa fa-angle-left prev" />
-                            <i className="fa fa-angle-right next" />
                             <Slider {...this.settingSlick(this.renderShowing(true).false)} className=" showing__item container-fluid">
                                 {this.renderShowing(false)}
 
@@ -180,4 +183,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Showing);
+export default (connect(mapStateToProps, mapDispatchToProps))(Showing);

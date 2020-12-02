@@ -5,12 +5,15 @@ import {newsReducer} from "./news";
 import {reviewReducer} from "./Reviews";
 import {cinemaReducer} from "./Cinema";
 import {infoCinemaReducer} from "./InfoCinema";
+import movieDetailReducer from "../containers/Home/MovieDetail/modules/reducer"
 const rootReducer = combineReducers({
     movieReducer,
     showing,
     newsReducer,
     reviewReducer,
     cinemaReducer,
-    infoCinemaReducer
+    movieDetailReducer,
+    infoCinemaReducer,
+    
 })
 export default rootReducer;

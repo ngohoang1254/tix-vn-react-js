@@ -1,12 +1,20 @@
 import React, { Component } from 'react';
 import Slider from "react-slick";
+function nextArrow(){
+    return (
+        <div style ={{display : "none"}}></div>
+    )
+}
 export default class MovieApp extends Component {
-    
+ 
     render() {
         const seeting = {
             arrows: false,
             autoplay: true,
             autoplaySpeed: 2000,
+            prevArrow: <nextArrow/>,
+            nextArrow:<nextArrow/>,
+            
         }
         return (
             <section className="movieApp" id="movieApp">
@@ -26,7 +34,7 @@ export default class MovieApp extends Component {
                             <div className="col-12 col-md-6">
                                 <div className="right-content">
                                     <img className="img-fluid phone__img" src="./img/mobile.png"   />
-                                    <Slider className="movie__phone">
+                                    <Slider {...seeting} className="movie__phone">
                                         <div className="item">
                                             <img src="./img/slide7.jpg"   />
                                         </div>

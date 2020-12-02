@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-
-export default class ShowingItem extends Component {
+import React, { Component } from 'react';
+import {withRouter} from "react-router-dom";
+class ShowingItem extends Component {
     render() {
         const { data } = this.props;
-        console.log(this.props);
+
         return (
             <div className="item">
                 <div className="item__image">
@@ -20,7 +20,7 @@ export default class ShowingItem extends Component {
                             <h3>Mua vé</h3>
                         </a> */}
                         <button
-                            className="btn btn-success"
+                            
                             onClick={() => this.props.history.push(`/movie/${data.maPhim}`)}
                         >
                             Chi tiết
@@ -31,3 +31,4 @@ export default class ShowingItem extends Component {
         )
     }
 }
+export default withRouter(ShowingItem);
